@@ -57,9 +57,11 @@ def cars_draw():
         cars_list[i].move(speed_car_blue)
         if cars_list[i].y < 1030:
             pygame.draw.rect(win, (0, 0, 255), (cars_list[i].x, cars_list[i].y, width, height))
+            pygame.draw.circle(win, (255, 0, 0), (cars_list[i].x, cars_list[i].y), 1)
         else:
             del cars_list[i]
             pygame.draw.rect(win, (0, 0, 255), (cars_list[i].x, cars_list[i].y, width, height))
+            pygame.draw.circle(win, (255, 0, 0), (cars_list[i].x, cars_list[i].y), 1)
             break
 
 
@@ -100,17 +102,13 @@ def control(xn, yn):
 
 def crash():
     for i in range(len(cars_list)):
-        if y > cars_list[i].y:
-            if abs(x - cars_list[i].x) <= 40 and abs(y - (cars_list[i].y)) <= 90:
-                return False
-        else:
-            if abs(x - (cars_list[i].x - 10)) <= 50 and abs(y - (cars_list[i].y - 10)) <= 100:
-                return False
+        if (abs(x - cars_list[i].x) >= 0 and abs(x - cars_list[i].x) <= 50) and (abs(y - cars_list[i].y) <= height):
+            return False
     return True
 
 
 while run:
-    pygame.time.delay(10)
+    pygame.time.delay(50)
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -123,6 +121,7 @@ while run:
         cars_logic()
         x, y = control(x, y)
         pygame.draw.rect(win, (145, 255, 195), (x, y, width, height))
+        pygame.draw.circle(win, (51,58,255), (x,y), 1)
         pygame.display.update()
     else:
         run = False
